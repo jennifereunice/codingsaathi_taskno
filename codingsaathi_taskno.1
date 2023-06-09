@@ -1,0 +1,95 @@
+package com.example.converterapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.WindowDecorActionBar;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+    private Spinner spinnerid;
+    private Button buttonforkilotogram,buttonforcmtometer;
+    private View kilotogram,cmtometer;
+    private EditText editforkilotogram,editforcmtometer;
+    private TextView textforkilotogram,textforcmtometer;
+    private double num,convertednum;
+    private double numform;
+    private double convertednumform;
+    private String res,value,resform;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        spinnerid=findViewById(R.id.spinnerid);
+        kilotogram=findViewById(R.id.kilotogram);
+        cmtometer=findViewById(R.id.cmtometer);
+        buttonforcmtometer=findViewById(R.id.buttonforcmtometer);
+        buttonforkilotogram=findViewById(R.id.buttonforkilotogram);
+        editforkilotogram=findViewById(R.id.editforkilotogram);
+        editforcmtometer=findViewById(R.id.editforcmtometer);
+        textforkilotogram=findViewById(R.id.textforkilotogram);
+        textforcmtometer=findViewById(R.id.textforcmtometer);
+        ArrayList<String> convertnames=new ArrayList<String>();
+        convertnames.add("convert kilo to grams");
+        convertnames.add("convert meter to cm");
+        ArrayAdapter<String> spinneradapter=new ArrayAdapter(this
+        , android.R.layout.simple_dropdown_item_1line,convertnames);
+        spinnerid.setAdapter(spinneradapter);
+        spinnerid.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (convertnames.get(i).equals("convert kilo to grams")) {
+                    cmtometer.setVisibility(View.GONE);
+                    kilotogram.setVisibility(View.VISIBLE);
+                    convertfromkilotograms();
+                }
+                  if (convertnames.get(i).equals("convert meter to cm")) {
+                      kilotogram.setVisibility(View.GONE);
+                      cmtometer.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+            });
+
+        buttonforkilotogram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                convertfromkilotograms();
+                textforkilotogram.setText(res);
+            }
+        });
+
+        buttonforcmtometer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String valueform=editforcmtometer.getText().toString();
+                numform=Double.parseDouble(valueform);
+                convertednum= numform*100.00;
+                resform=Double.toString(numform*100.00);
+                textforcmtometer.setText(resform);
+            }
+        });
+
+}
+
+       public void convertfromkilotograms(){
+       String value=editforkilotogram.getText().toString();
+    num=Double.parseDouble(value);
+    convertednum=num*1000.00;
+    res = Double.toString(convertednum);
+        }
+    }
