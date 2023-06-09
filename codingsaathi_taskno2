@@ -1,0 +1,59 @@
+package com.example.stopwatch;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.view.View;
+import android.widget.Chronometer;
+import android.widget.Button;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    private Button startbutton,pausebutton,resetbutton;
+    private Chronometer chronometer;
+    private long pasoffset;
+    boolean running;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        startbutton=findViewById(R.id.startbutton);
+        pausebutton=findViewById(R.id.pausebutton);
+        resetbutton=findViewById(R.id.resetbutton);
+        chronometer=findViewById(R.id.chronometer);
+        startbutton.setOnClickListener(this);
+        pausebutton.setOnClickListener(this);
+        resetbutton.setOnClickListener(this);
+
+
+    }
+    public void onClick(View view)
+    {
+        switch(view.getId())
+        {
+            case R.id.startbutton:
+                if(!running)
+                {
+                    chronometer.setBase(SystemClock.elapsedRealtime()-pasoffset);
+                    chronometer.start();
+                    running=true;
+                }
+                break;
+            case R.id.pausebutton:
+                if(running)
+                {
+                    chronometer.stop();
+                    pasoffset=SystemClock.elapsedRealtime()-chronometer.getBase();
+                    running=false;
+                }
+                break;
+            case R.id.resetbutton:
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                pasoffset=0;
+                break;
+        }
+    }
+}
